@@ -1,5 +1,5 @@
 #修改TNAME: K2P 中的K2P为你需要编译的型号，注意名称要与configs/templates/目录下的名字相同
-name: Build-K2P-5.0
+name: Build-Padavan-K2P-5.0
 
 on: 
   workflow_dispatch:
@@ -25,13 +25,13 @@ jobs:
       env:
         KERNEL: 3.4
       run: |
-        git clone --depth=1 https://github.com/rogerujn/Padavan-KVR.git /opt/rt-n56u
+        git clone --depth=1 https://github.com/fightroad/Padavan-KVR.git /opt/rt-n56u
         cd /opt/rt-n56u/toolchain-mipsel
         sh dl_toolchain.sh
         mkdir -p /opt/images/
     - name: Build Firmware
       env:
-        TNAME: K2P-5.0
+        TNAME: K2P
         KERNEL: 3.4
       run: |
         cd /opt/rt-n56u/trunk
@@ -55,6 +55,10 @@ jobs:
         sed -i '/CONFIG_FIRMWARE_INCLUDE_TRANSMISSION_WEB_CONTROL/d' .config
         sed -i '/CONFIG_FIRMWARE_INCLUDE_ARIA/d' .config
         sed -i '/CONFIG_FIRMWARE_INCLUDE_ARIA_WEB_CONTROL/d' .config
+        sed -i '/CONFIG_FIRMWARE_INCLUDE_ZEROTIER/d' .config
+        sed -i '/CONFIG_FIRMWARE_INCLUDE_FRPC/d' .config
+        sed -i '/CONFIG_FIRMWARE_INCLUDE_ALIDDNS/d' .config
+        sed -i '/CONFIG_FIRMWARE_INCLUDE_SHADOWSOCKS/d' .config
         sed -i '/CONFIG_FIRMWARE_INCLUDE_V2RAY/d' .config
         sed -i '/CONFIG_FIRMWARE_INCLUDE_XRAY/d' .config
         sed -i '/CONFIG_FIRMWARE_INCLUDE_TROJAN/d' .config
@@ -64,6 +68,7 @@ jobs:
         sed -i '/CONFIG_FIRMWARE_INCLUDE_SOFTETHERVPN_CMD/d' .config
         sed -i '/CONFIG_FIRMWARE_INCLUDE_NPC/d' .config
         sed -i '/CONFIG_FIRMWARE_WEBUI_HIDE_VPN/d' .config
+        sed -i '/CONFIG_FIRMWARE_INCLUDE_OPENVPN/d' .config
         ######################################################################
         #以下选项是定义你需要的功能（y=集成,n=忽略），重新写入到.config文件
         ######################################################################
